@@ -179,13 +179,22 @@ export function suggestionTextPresentation(
   return nodes;
 }
 
+let lastCanonicalSource: { source: string; canonical: string } | null = null;
+
+// A suggestion's lines are presented one at a time against the same source.
+function canonicalSourceOf(source: string) {
+  if (lastCanonicalSource?.source !== source)
+    lastCanonicalSource = { source, canonical: canonicalizeNfm(source) };
+  return lastCanonicalSource.canonical;
+}
+
 export function suggestionTextPresentationForSource(
   content: string,
   context: SuggestionPresentationContext,
 ): SuggestionPresentationNode[] | null {
   if (context.source.slice(context.from, context.to) !== content) return null;
   if (content.length === 0 && context.from === context.to) return [];
-  const canonicalSource = canonicalizeNfm(context.source);
+  const canonicalSource = canonicalSourceOf(context.source);
   const canonicalRange = resolveMarkdownSuggestionRange(canonicalSource, {
     before: { markdown: context.source, changedText: content },
     after: { markdown: context.source, changedText: content },

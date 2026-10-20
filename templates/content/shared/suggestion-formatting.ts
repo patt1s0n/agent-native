@@ -67,9 +67,34 @@ function longestBacktickRun(text: string): number {
   return longestRun(text, /`+/g);
 }
 
+type FormattingRuns = ReturnType<typeof parseFormattingRuns>;
+
+const recentFormattingRuns: Array<{
+  source: string;
+  anchorEmptyCells: boolean;
+  mapped: FormattingRuns;
+}> = [];
+
+// Highlighting a suggestion reads its Page once per suggested line, so the
+// last few parses are kept. Callers only read what this returns.
 function formattingRuns(
   source: string,
   anchorEmptyCells = false,
+): FormattingRuns {
+  const recent = recentFormattingRuns.find(
+    (entry) =>
+      entry.anchorEmptyCells === anchorEmptyCells && entry.source === source,
+  );
+  if (recent) return recent.mapped;
+  const mapped = parseFormattingRuns(source, anchorEmptyCells);
+  recentFormattingRuns.unshift({ source, anchorEmptyCells, mapped });
+  recentFormattingRuns.length = Math.min(recentFormattingRuns.length, 8);
+  return mapped;
+}
+
+function parseFormattingRuns(
+  source: string,
+  anchorEmptyCells: boolean,
 ): {
   runs: TextRun[];
   nonTextAfter: boolean;
