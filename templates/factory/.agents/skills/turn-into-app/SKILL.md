@@ -112,12 +112,21 @@ run one pass and list the open criteria.
 ```text
 - [ ] 0 Host classified, source picked
 - [ ] 1 Source read, brief drafted
-- [ ] 2 Design decided, brief posted with App design
+- [ ] 2 Design decided; brief, App design, and time estimate shown
 - [ ] 3 Real scaffold, onboarding config, local sign-in
 - [ ] 4 Actions, domain surface, sample data, agent moments, agent instructions
 - [ ] 5 Running; screenshots reviewed and refined (two passes by default)
 - [ ] 6 Typecheck, doctor, build; final report with evidence labels
 ```
+
+Resume an unfinished run instead of starting a second app. When the working
+directory holds an app this skill started for the same source (a completed
+scaffold or actions, but no review screenshots), read its git status, brief, schema, and
+actions, then open your first message with what you found and what is left,
+for example: "Found a half-built app in this folder from an earlier run that
+stopped partway. The data model and actions are done, so I'll pick up from
+there: screens next, then checks. About 10 more minutes." Continue from the
+first unfinished step.
 
 ### 1. Write the source brief
 
@@ -154,9 +163,10 @@ add them to the brief under App design:
 
 Source steps become states of objects (Draft, Checked, Approved), never a
 stepper, numbered tabs, or a wizard. Chrome stays quiet: no eyebrow, subtitle,
-repeated title, or stat strip over visible data. Post the brief once, with its
-App design, before the first scaffold command, as a checkpoint, and continue
-without waiting.
+repeated title, or stat strip over visible data. Before the first scaffold
+command, show the brief with its App design in your message (a saved file is
+not shown) and say how long the rest takes, usually 15 to 30 minutes; then
+continue without waiting.
 
 ### 3. Create the real scaffold
 
