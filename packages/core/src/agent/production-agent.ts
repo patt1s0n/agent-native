@@ -2066,6 +2066,7 @@ export interface ProductionAgentOptions {
     send: (event: AgentChatEvent) => void,
     threadId: string,
     runId: string,
+    turnId: string,
   ) => void | Promise<void>;
   /**
    * Called when the run's engine, model, and effort resolve, and again before
@@ -15004,7 +15005,12 @@ export function createProductionAgentHandler(
         }
 
         if (options.onRunStart) {
-          await options.onRunStart(send, threadId ?? runId, runId);
+          await options.onRunStart(
+            send,
+            threadId ?? runId,
+            runId,
+            effectiveTurnId,
+          );
         }
 
         const unknownOutcomes = noUnknownOutcomes();
@@ -15500,6 +15506,7 @@ export function createProductionAgentHandler(
                 loopOpts: agentLoopOpts,
                 runId,
                 threadId: threadId ?? null,
+                turnId: effectiveTurnId,
                 userId: ownerEmail,
                 config: obsConfig,
                 spanName:
@@ -15613,10 +15620,10 @@ export function createProductionAgentHandler(
             : "foreground",
         runRowAlreadyInserted: foregroundRunRowInserted,
         executionLease: true,
+        // The same identity `$ai_trace` and `run_started` carry for this run.
+        userId: ownerEmail ?? undefined,
         // Resolved AFTER stored-model/experiment overrides — the same value
         // actually sent to the engine, not the raw client-requested model.
-        // No userId here: `ownerEmail` is the only identity known at this
-        // scope and is PII (email), which the terminal event must not carry.
         model: effectiveModel,
         engineName: engine.name,
         attemptCount: backgroundContinuationCount,

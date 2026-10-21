@@ -8315,6 +8315,24 @@ describe("run manager soft timeout", () => {
       expect(properties).not.toHaveProperty("dispatch_mode");
     });
 
+    it("attributes agent_run_terminal to the run's user", async () => {
+      startRun(
+        "run-tracking-user",
+        "thread-tracking-user",
+        async (send) => {
+          send({ type: "text", text: "fast answer" });
+        },
+        undefined,
+        { softTimeoutMs: 0, userId: "ada@acme-corp.io" },
+      );
+
+      await vi.waitFor(() => expect(track).toHaveBeenCalledTimes(1));
+
+      const [name, , source] = vi.mocked(track).mock.calls[0];
+      expect(name).toBe("agent_run_terminal");
+      expect(source).toMatchObject({ userId: "ada@acme-corp.io" });
+    });
+
     it("emits an aborted event with the abort reason, not a false completion", async () => {
       startRun(
         "run-tracking-abort",
