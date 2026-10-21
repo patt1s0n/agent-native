@@ -79,6 +79,7 @@ import {
   type AgentChatRuntime,
   type CreateAgentNativeChatRuntimeOptions,
 } from "./runtime.js";
+import { trackTurnSubmitted } from "./turn-submitted-telemetry.js";
 
 export interface CreateAgentNativeAgentKitTransportOptions extends CreateAgentNativeChatRuntimeOptions {
   /** Optional host runtime executed through AgentKit's protocol lifecycle. */
@@ -4294,7 +4295,11 @@ export function createAgentNativeAgentKitTransport(
     );
   }
 
-  const runtime = options.runtime ?? createAgentNativeChatRuntime(options);
+  const runtime =
+    options.runtime ??
+    createAgentNativeChatRuntime(options, {
+      onTurnSubmitted: trackTurnSubmitted,
+    });
   const feedbackUrl =
     options.feedbackUrl ??
     agentNativePath("/_agent-native/observability/feedback");
