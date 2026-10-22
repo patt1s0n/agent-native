@@ -24,8 +24,7 @@ Also read `.agents/skills/<name>/SKILL.md` for shared guides: `actions`,
 `delegate-to-agent`, `agent-native-docs`, `agent-native-toolkit`,
 `customizing-agent-native`, `client-side-routing`, `reliable-mutations`,
 `performance`, `external-agents`, `portability`, `self-modifying-code`,
-`turn-into-skill`, and `workspace-conventions`. Each guide is at
-`.agents/skills/<name>/SKILL.md`.
+`turn-into-skill`, and `workspace-conventions`.
 
 ## Framework Docs
 
@@ -60,7 +59,10 @@ Search local docs with `pnpm action docs-search --query "<topic>"`; read by slug
 | `prepare-native-scene-export` | Pin scene for PNG |
 | `get-native-render-contexts` / `request-native-local-export` / `get-native-local-export` | Request foreground native PNG and inspect attachment |
 | `generate-screens` | Plan screens |
-| `export-png` / `export-coding-handoff` | PNG/code; handoff needs approval (7-day bearer URLs) |
+| `export-png` / `export-coding-handoff` | PNG/code; only direct MCP/A2A handoff calls need approval (7-day bearer URLs) |
+| `export-html` | Export standalone HTML |
+| `export-zip` | Export ZIP |
+| `export-design-as-figma-svg` | Export Figma SVG |
 
 ## Core Rules
 
@@ -85,6 +87,4 @@ Search local docs with `pnpm action docs-search --query "<topic>"`; read by slug
 
 Before building common workspace or agent UI, read `agent-native-toolkit`; read `customizing-agent-native` before adapting shared UI. Editor behavior lives in `app/pages/design-editor/commands/*.ts`; read `design-editor-architecture` before changing it.
 
-Search with `rg --hidden --follow`; read the exact linked guide before deeper work.
-
-Find and read relevant guides with `rg --hidden --follow`.
+Find guides with `rg --hidden --follow`.
